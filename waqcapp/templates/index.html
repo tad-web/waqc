@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    A Small Hello
+  </title>
+</head>
+<body>
+  <h1>Hi</h1>
+  <p>This is a very minimal "hello world" HTML document.</p>
+  <h1>Write something!</h1>
+  <form action="{{ url_for('send_something') }}" method="post">
+    <p>
+      <input type="text" name="text">
+      <input type="submit" value="Share">
+    </p>
+  </form>
+</body>
+</html>
