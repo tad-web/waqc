@@ -6,6 +6,12 @@ name = "pypi"
 [packages]
 gunicorn = "*"
 flask = "*"
+alembic = "*"
+flask-migrate = "*"
+flask-script = "*"
+flask-sqlalchemy = "*"
+"psycopg2" = "*"
+requests = "*"
 
 [dev-packages]
 
