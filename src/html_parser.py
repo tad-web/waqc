@@ -2,6 +2,9 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+from accessibility_notice import AccessibilityNotice
+from enums import Flavor, Severity
+
 
 class HTMLParser:
     def __init__(self, url, config_path='../config/'):
@@ -29,13 +32,15 @@ class HTMLParser:
     def get_links(self):
         return self.soup.find_all('a')
 
-    def get_bad_links(self):
-        bad_links = []
+    def get_bad_link_tags(self):
+        bad_link_tags = []
         for link in self.get_links():
             if (link.text.lower() in self.bad_link_names):
-                bad_links.append(link.string)
-        return bad_links
+                bad_link_tags.append(link)
+        return bad_link_tags
 
-    def examine_links(self):
-        for link in self.get_links():
-            print(link.text)
+    def waqc(self):
+        notices = []
+        for tag in self.get_bad_link_tags():
+            notices.append(AccessibilityNotice(tag, 0, Flavor.LINK, Severity.WARNING))
+        return notices
