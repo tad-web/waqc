@@ -5,4 +5,4 @@
 env.local
 
 # Python byte code
-*.pyc
+**.pyc

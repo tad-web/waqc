@@ -17,23 +17,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ["DATABASE_URL"]
 db = SQLAlchemy(app)
 migrate = Migrate(app,db)
 
-from models import Result
+# from models import Result
+import sys
+sys.path.append('src')
+from html_parser import HTMLParser
 
 @app.route('/')
-def index():
-    return render_template('index.html')
+def url_input():
+    return render_template('url-input.html')
 
-@app.route('/send_something', methods=['POST'])
-def send_something():
-    submission = request.form['text']
-    print(submission)
-    return redirect(url_for('results', words=submission))
-
-
-@app.route('/results/<words>')
-def results(words=None):
-    print(words)
-    return render_template('results.html', submission=words)
+@app.route('/', methods=['POST'])
+def url_input_post():
+    url = request.form['url']
+    return render_template('report.html', notices=HTMLParser(url).waqc())
 
 if __name__ == '__main__':
     app.config['DEBUG'] = True
