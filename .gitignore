@@ -1,5 +1,8 @@
 # Vim swap files
 *.swp
 
+# env files
+env.local
+
 # Python byte code
 *.pyc
