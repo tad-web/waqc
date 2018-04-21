@@ -10,6 +10,6 @@ class Severity(Enum):
 
 
 class Flavor(Enum):
-    LINK = 1
+    LINK_LABEL = 1
     ALT_TEXT = 2
     COLOR_CONTRAST = 3
