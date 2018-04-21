@@ -32,15 +32,28 @@ class HTMLParser:
     def get_links(self):
         return self.soup.find_all('a')
 
-    def get_bad_link_tags(self):
+    def get_img_tags(self):
+        return self.soup.find_all('img')
+
+    def get_bad_link_label_tags(self):
         bad_link_tags = []
         for link in self.get_links():
             if (link.text.lower() in self.bad_link_names):
                 bad_link_tags.append(link)
         return bad_link_tags
 
+    def get_bad_alt_text(self):
+        bad_img_tags = []
+        for img_tag in self.get_img_tags():
+            alt_text = img_tag['alt']
+            if (alt_text == '' or alt_text.lower().endswith(('png', 'jpg'))):
+                bad_img_tags.append(img_tag)
+        return bad_img_tags
+
     def waqc(self):
         notices = []
-        for tag in self.get_bad_link_tags():
-            notices.append(AccessibilityNotice(tag, 0, Flavor.LINK, Severity.WARNING))
+        for tag in self.get_bad_link_label_tags():
+            notices.append(AccessibilityNotice(tag, Flavor.LINK_LABEL, Severity.ERROR))
+        for tag in self.get_bad_alt_text():
+            notices.append(AccessibilityNotice(tag, Flavor.ALT_TEXT, Severity.ERROR))
         return notices
