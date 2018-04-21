@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>WAQC Report</title>
+</head>
+<body>
+  <h1>Report Output</h1>
+  {% for notice in notices %}
+    <p>{{ notice.flavor }} </p>
+    <p>{{ notice.severity }} </p>
+    <p>Tag: {{ notice.tag }} </p>
+    <br>
+  {% endfor %}
+</body>
+</html>
