@@ -1,6 +1,6 @@
 # waqc
 
-## setup
+## Setup
 
 ### pipenv
 
@@ -91,6 +91,13 @@ Note: if the commit results in `alembic.util.exc.CommandError: Target database i
 ```bash
 $ pipenv run flask db stamp head
 ```
+
+## Run
+
+```bash
+$ python src/main.py
+```
+
 
 ## Sources, I guess?
 
