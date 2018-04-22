@@ -95,7 +95,7 @@ $ pipenv run flask db stamp head
 ## Run
 
 ```bash
-$ python src/main.py
+$ python app/routes.py
 ```
 
 
