@@ -1,5 +1,6 @@
 import os
 import requests
+import re
 from bs4 import BeautifulSoup
 
 from accessibility_notice import AccessibilityNotice
@@ -35,11 +36,14 @@ class HTMLParser:
     def get_img_tags(self):
         return self.soup.find_all('img')
 
+    def get_header_tags(self):
+        return self.soup.find_all(re.compile('^h[1-6]$'))
+
     def get_bad_link_label_tags(self):
         bad_link_tags = []
-        for link in self.get_links():
-            if (link.text.lower() in self.bad_link_names):
-                bad_link_tags.append(link)
+        for link_tag in self.get_links():
+            if (link_tag.text.lower() in self.bad_link_names):
+                bad_link_tags.append(link_tag)
         return bad_link_tags
 
     def get_bad_alt_text(self):
@@ -50,10 +54,23 @@ class HTMLParser:
                 bad_img_tags.append(img_tag)
         return bad_img_tags
 
+    def get_bad_header_tags(self):
+        bad_header_tags = []
+        h_tags = self.get_header_tags()
+        for i in range(len(h_tags)):
+            if i == 0 and int(h_tags[i].name[1]) != 1:
+                bad_header_tags.append(h_tags[i])
+            elif int(h_tags[i].name[1]) - int(h_tags[i - 1].name[1]) > 1:
+                bad_header_tags.append(h_tags[i])
+        return bad_header_tags
+
+
     def waqc(self):
         notices = []
         for tag in self.get_bad_link_label_tags():
             notices.append(AccessibilityNotice(tag, Flavor.LINK_LABEL, Severity.ERROR))
         for tag in self.get_bad_alt_text():
             notices.append(AccessibilityNotice(tag, Flavor.ALT_TEXT, Severity.ERROR))
+        for tag in self.get_bad_header_tags():
+            notices.append(AccessibilityNotice(tag, Flavor.HEADER, Severity.ERROR))
         return notices

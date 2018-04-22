@@ -13,3 +13,4 @@ class Flavor(Enum):
     LINK_LABEL = 1
     ALT_TEXT = 2
     COLOR_CONTRAST = 3
+    HEADER = 4

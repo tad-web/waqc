@@ -1,12 +1,15 @@
-import sys
 import os
+import sys
+curr_dir = os.path.dirname(__file__)
+sys.path.append(curr_dir + '../src')
+
+
 from flask import Flask, render_template, request
 
-app = Flask(__name__)
-curr_dir = os.path.dirname(__file__)
-
-sys.path.append(curr_dir + '../src')
 from html_parser import HTMLParser
+
+
+app = Flask(__name__)
 
 @app.route('/')
 def url_input():
