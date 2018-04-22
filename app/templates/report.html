@@ -1,15 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>WAQC Report</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block content %}
   <h1>Report Output</h1>
+  <a href="/">Home</a>
   {% for notice in notices %}
     <p>{{ notice.flavor }} </p>
     <p>{{ notice.severity }} </p>
     <p>Tag: {{ notice.tag }} </p>
     <br>
   {% endfor %}
-</body>
-</html>
+{% endblock %}

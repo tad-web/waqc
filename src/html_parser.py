@@ -45,7 +45,7 @@ class HTMLParser:
     def get_bad_alt_text(self):
         bad_img_tags = []
         for img_tag in self.get_img_tags():
-            alt_text = img_tag['alt']
+            alt_text = img_tag.get('alt', '')
             if (alt_text == '' or alt_text.lower().endswith(('png', 'jpg'))):
                 bad_img_tags.append(img_tag)
         return bad_img_tags
