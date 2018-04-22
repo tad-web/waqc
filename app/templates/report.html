@@ -3,9 +3,10 @@
 {% block content %}
   <h1>Report Output</h1>
   {% for notice in notices %}
-    <p>{{ notice.flavor }} </p>
-    <p>{{ notice.severity }} </p>
-    <p>Tag: {{ notice.tag }} </p>
+    <p>{{ notice.flavor.name }} </p>
+    <p>{{ notice.severity.name }} </p>
+    <p>{{ notice.tag }} </p>
+    <p>{{ notice.explanation }} </p>
     <br>
   {% endfor %}
 {% endblock %}
