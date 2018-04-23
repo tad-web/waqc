@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Report Output</h1>
+  {% if not notices %}
+    <p>Our quick check found no accessibility problems, but remember: there is always room for improvement!</p>
+  {% else %}
+    {% for notice in notices %}
+      <p>{{ notice.flavor.name }} </p>
+      <p>{{ notice.severity.name }} </p>
+      <p>{{ notice.tag }} </p>
+      <p>{{ notice.explanation }} </p>
+      <br>
+    {% endfor %}
+  {% endif %}
+{% endblock %}
