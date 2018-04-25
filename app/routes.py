@@ -16,7 +16,7 @@ def url_input():
 
 @app.route('/', methods=['POST'])
 def url_input_post():
-  url = request.form['url']
+  url = request.form['url to check']
   return render_template('report.html', notices=HTMLParser(url).waqc())
 
 if __name__ == '__main__':
