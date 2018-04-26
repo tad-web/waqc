@@ -2,14 +2,16 @@
 
 {% block content %}
   <h1>Report Output</h1>
-  {% if not notices %}
-    <p>Our quick check found no accessibility problems, but remember: there is always room for improvement!</p>
-  {% else %}
-    {% for notice in notices %}
-      <h2>{{ notice.flavor.name }}, {{ notice.severity.name }}</h2>
-      <p>{{ notice.tag }} </p>
-      <p>{{ notice.explanation }} </p>
-      <br>
-    {% endfor %}
-  {% endif %}
+  {% for notice_type in notices_dict %}
+    <h2>{{ notice_type }}s</h2>
+    {% if not notices_dict[notice_type] %}
+      <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
+    {% else %}
+      {% for notice in notices_dict[notice_type] %}
+        <p>{{ notice.tag }} </p>
+        <p>{{ notice.explanation }} </p>
+        {% if not loop.last %}<br>{% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
 {% endblock %}
