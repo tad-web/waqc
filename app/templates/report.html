@@ -2,6 +2,8 @@
 {% block title %}Report{% endblock %}
 
 {% block content %}
+  <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
+  <div id="toCopy">
   <h1>Report Output</h1>
   {% for notice_type in notices_dict %}
     <h2>{{ notice_type }}s</h2>
@@ -15,4 +17,5 @@
       {% endfor %}
     {% endif %}
   {% endfor %}
+  </div>
 {% endblock %}
