@@ -6,7 +6,11 @@
   <div id="toCopy">
   <h1>Report Output</h1>
   {% for notice_type in notices_dict %}
-    <h2>{{ notice_type }}s</h2>
+    {% if notices_dict[notice_type] | length == 1 %}
+      <h2>{{ notice_type }}s: {{ notices_dict[notice_type]|length }} Violation Found</h2>
+    {% else %}
+      <h2>{{ notice_type }}s: {{ notices_dict[notice_type]|length }} Violations Found</h2>
+    {% endif %}
     {% if not notices_dict[notice_type] %}
       <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
     {% else %}
