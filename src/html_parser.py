@@ -78,8 +78,8 @@ class HTMLParser:
     return bad_header_notices
 
   def waqc(self):
-    notices = []
-    notices.extend(self.get_bad_link_label_notices())
-    notices.extend(self.get_bad_alt_text_notices())
-    notices.extend(self.get_bad_header_notices())
+    notices = {}
+    notices[str(Flavor.LINK_LABEL)] = self.get_bad_link_label_notices()
+    notices[str(Flavor.ALT_TEXT)] = self.get_bad_alt_text_notices()
+    notices[str(Flavor.HEADER)] = self.get_bad_header_notices()
     return notices

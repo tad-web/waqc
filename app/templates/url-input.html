@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% block title %}Homepage{% endblock %}
 
 {% block content %}
   <center>
   <h1>URL Input</h1>
   <form method="POST">
     <label for="url to check">URL to check:</label>
-    <input type="url" name="url to check" id="url to check" required aria-required="true">
+    <input name="url to check" id="url to check" required aria-required="true">
     <input type="submit" value="Submit">
   </form>
   </center>

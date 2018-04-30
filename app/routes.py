@@ -17,7 +17,13 @@ def url_input():
 @app.route('/', methods=['POST'])
 def url_input_post():
   url = request.form['url to check']
-  return render_template('report.html', notices=HTMLParser(url).waqc())
+  if not url.startswith(('http://', 'https://')):
+    url = 'http://' + url
+  try:
+    notices_dict = HTMLParser(url).waqc()
+    return render_template('report.html', notices_dict=notices_dict)
+  except:
+    return render_template('url-error.html', url=url)
 
 if __name__ == '__main__':
   app.config['DEBUG'] = True

@@ -1,6 +1,7 @@
-<html>
+<html lang="en">
   <head>
-    <title>Web Accessibility Quick Check</title>
+    <title>{% block title %}{% endblock %} - Web Accessibility Quick Check</title>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
