@@ -14,6 +14,10 @@ app = Flask(__name__)
 def url_input():
   return render_template('url-input.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/', methods=['POST'])
 def url_input_post():
   url = request.form['url to check']

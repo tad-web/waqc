@@ -2,6 +2,7 @@
 {% block title %}Report{% endblock %}
 
 {% block content %}
+<div class="container">
   <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
   <div id="toCopy">
   <h1>Report Output</h1>
@@ -31,4 +32,5 @@
     {% endfor %}
   {% endfor %}
   </div>
+</div>
 {% endblock %}
