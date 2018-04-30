@@ -19,11 +19,13 @@ def url_input_post():
   url = request.form['url to check']
   if not url.startswith(('http://', 'https://')):
     url = 'http://' + url
-  try:
-    url_notices = HTMLParser(url).waqc()
-    return render_template('report.html', url_notices=url_notices )
-  except:
-    return render_template('url-error.html', url=url)
+  url_notices = HTMLParser(url).waqc()
+  return render_template('report.html', url_notices=url_notices )
+  # try:
+  #   url_notices = HTMLParser(url).waqc()
+  #   return render_template('report.html', url_notices=url_notices )
+  # except:
+  #   return render_template('url-error.html', url=url)
 
 if __name__ == '__main__':
   app.config['DEBUG'] = True
