@@ -20,8 +20,8 @@ def url_input_post():
   if not url.startswith(('http://', 'https://')):
     url = 'http://' + url
   try:
-    notices_dict = HTMLParser(url).waqc()
-    return render_template('report.html', notices_dict=notices_dict)
+    url_notices = HTMLParser(url).waqc()
+    return render_template('report.html', url_notices=url_notices )
   except:
     return render_template('url-error.html', url=url)
 

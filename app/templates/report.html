@@ -5,21 +5,30 @@
   <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
   <div id="toCopy">
   <h1>Report Output</h1>
-  {% for notice_type in notices_dict %}
-    {% if notices_dict[notice_type] | length == 1 %}
-      <h2>{{ notice_type }}s: {{ notices_dict[notice_type]|length }} Violation Found</h2>
+  {% for url in url_notices %}
+    {% if loop.first %}
+      <h2>Homepage: <a href="{{ url }}">{{ url }}</a></h2>
     {% else %}
-      <h2>{{ notice_type }}s: {{ notices_dict[notice_type]|length }} Violations Found</h2>
+      <h2>Subpage: <a href="{{ url }}">{{ url }}</a></h2>
     {% endif %}
-    {% if not notices_dict[notice_type] %}
-      <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
-    {% else %}
-      {% for notice in notices_dict[notice_type] %}
-        <p>{{ notice.tag }} </p>
-        <p>{{ notice.explanation }} </p>
-        {% if not loop.last %}<br>{% endif %}
-      {% endfor %}
-    {% endif %}
+    {% set notices_dict = url_notices[url] %}
+    {% for notice_type in notices_dict %}
+      {% set curr_type_notices = notices_dict[notice_type] %}
+      {% if curr_type_notices | length == 1 %}
+        <h3>{{ notice_type }}s: {{ curr_type_notices|length }} Violation Found</h3>
+      {% else %}
+        <h3>{{ notice_type }}s: {{ curr_type_notices|length }} Violations Found</h3>
+      {% endif %}
+      {% if not curr_type_notices %}
+        <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
+      {% else %}
+        {% for notice in curr_type_notices %}
+          <p>{{ notice.tag }} </p>
+          <p>{{ notice.explanation }} </p>
+          {% if not loop.last %}<br>{% endif %}
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
   {% endfor %}
   </div>
 {% endblock %}
