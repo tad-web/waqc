@@ -3,12 +3,18 @@
     <title>Web Accessibility Quick Check</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css')}}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
   </head>
   <body>
-    <div>
-      Web Accessibility Quick Check
-      <a href="/" style="float:right">Home</a>
-    </div>
+    <div class="navbar-spacer"></div>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="navbar-list">
+          <li class="navbar-item"><a class="navbar-link" href="/">Home</a></li>
+          <li class="navbar-item"><a class="navbar-link" href="/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
     <hr>
     {% block content %}{% endblock %}
   </body>
