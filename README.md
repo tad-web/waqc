@@ -110,3 +110,6 @@ $ python app/routes.py
 
 A lot our documentation is borrowed from [here](https://github.com/HALtheWise/baby-harvester/wiki/Local-Gateway-Development "BabyHarvester wiki").
 
+## Limitations 
+
+At the end of the project, we will post our limitations here. 
