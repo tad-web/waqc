@@ -19,8 +19,6 @@ class HTMLParser:
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
 
   def add_url(self, url):
-    if not url.endswith('/'):
-      url = url + '/'
     self.urls.append(url)
     r = requests.get(url)
     html = str(r.content)
@@ -46,13 +44,14 @@ class HTMLParser:
   def get_internal_link_tags(self, url):
     trimmed_url = re.sub('(https?://)?(www\.)?', '', url)
     link_tags = [tag for tag in self.get_link_tags(url) if tag.get('href') is not None]
-    p = re.compile('^((https?://)?(www\.)?' + trimmed_url + '|/[^/]).*$')
+    p = re.compile('^((//)?(https?://)?(www\.)?' + trimmed_url + '|/[^/]).*$')
     return [link for link in link_tags if p.match(link.get('href'))]
 
   def get_internal_links(self, url):
     internal_link_tags = self.get_internal_link_tags(url)
     internal_links = [tag.get('href') for tag in internal_link_tags]
-    internal_links = [url + link[1:] if link.startswith('/') else link for link in internal_links]
+    internal_links = ['http:' + link if link.startswith('//') else link for link in internal_links]
+    internal_links = [url + link if link.startswith('/') else link for link in internal_links]
     return internal_links
 
   def add_random_internal_url(self, url):
