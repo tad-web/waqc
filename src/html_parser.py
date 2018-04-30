@@ -45,9 +45,9 @@ class HTMLParser:
 
   def get_internal_link_tags(self, url):
     trimmed_url = re.sub('(https?://)?(www\.)?', '', url)
-    links = self.get_link_tags(url)
-    p = re.compile('^((https?://)?(www\.)?' + trimmed_url + '|/).*$')
-    return [link for link in links if p.match(link.get('href'))]
+    link_tags = [tag for tag in self.get_link_tags(url) if tag.get('href') is not None]
+    p = re.compile('^((https?://)?(www\.)?' + trimmed_url + '|/[^/]).*$')
+    return [link for link in link_tags if p.match(link.get('href'))]
 
   def get_internal_links(self, url):
     internal_link_tags = self.get_internal_link_tags(url)
