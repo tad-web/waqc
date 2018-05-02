@@ -6,6 +6,9 @@
   <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
   <div id="toCopy">
   <h1>Report Output</h1>
+  {% set notices_types = url_notices[(url_notices.keys() | list)[0]].keys() | list %}
+  <p>{{ notices_types }}</p>
+
   {% for url in url_notices %}
     {% if loop.first %}
       <h2>Homepage: <a href="{{ url }}">{{ url }}</a></h2>
