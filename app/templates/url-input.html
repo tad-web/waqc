@@ -4,12 +4,20 @@
 {% block content %}
 <div class="container">
   <center>
-  <h1>URL Input</h1>
-  <form method="POST">
-    <label for="url to check">URL to check:</label>
-    <input name="url to check" id="url to check" required aria-required="true">
-    <input type="submit" value="Submit">
-  </form>
+    <h1>URL Input</h1>
+  </center>
+  <p>This will check the page at the url submitted below and a randomly selected subpage for the following potential accessibility violations:</p>
+  <ul>
+    <li>Link labels: We note if a link label matches one of our limited list of not-descriptive potential labels.</li>
+    <li>Image alt text: We note if an image has no alt text or if the alt text contains a file extension.</li>
+    <li>Header hierarchy: We note if the first header on a page is not an h1 or if header levels are skipped.</li>
+  </ul>
+  <center>
+    <form method="POST">
+      <label for="url to check">URL to check:</label>
+      <input name="url to check" id="url to check" required aria-required="true">
+      <input type="submit" value="Submit">
+    </form>
   </center>
 </div>
 {% endblock %}
