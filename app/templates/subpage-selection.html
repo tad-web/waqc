@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Subpage Selection{% endblock %}
+
+{% block content %}
+<div class="container">
+  <center>
+    <h1>Subpage Selection</h1>
+    <form method="POST" action="/report-output">
+      <label for="subpage to check">Subpage to check:</label>
+      <select name="subpage to check" id="subpage to check" required aria-required="true">
+        {% for link in links %}
+          <option value="{{ link }}">{{ link }}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Submit">
+    </form>
+  </center>
+</div>
+{% endblock %}

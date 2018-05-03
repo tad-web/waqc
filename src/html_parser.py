@@ -9,14 +9,16 @@ from enums import Flavor, Severity
 
 
 class HTMLParser:
-  def __init__(self, url, config_path='../config/'):
-    """ Call self.add_url() """
+  def __init__(self, urls, config_path='../config/'):
+    """ Takes in a list of URLs, adds each one to self.urls, and adds all of the corresponding Soup
+    objects to self.soups. """
     self.urls = []
     self.soups = {}
 
-    self.add_url(url)
-    self.config_path = config_path
+    for url in urls:
+      self.add_url(url)
 
+    self.config_path = config_path
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
 
   def add_url(self, url):
@@ -37,27 +39,51 @@ class HTMLParser:
       f.close()
     return array
 
+  def remove_url_prefixes(self, url):
+    """ Returns the specified URL with the 'http://' and 'www.' prefixes removed. """
+    url = re.sub('(https?://)?(www\.)?', '', url)
+    return url
+
+  def remove_url_suffixes(self, url):
+    """ Returns the specified URL with the '/' suffixes removed. """
+    return re.match('(https?://)?(www\.)?[^/]*', url).group()
+
+  def remove_url_affixes(self, url):
+    """ Returns the specified URL with the prefixes and suffixes removed. """
+    url = self.remove_url_prefixes(url)
+    url = self.remove_url_suffixes(url)
+    return url
+
+  def get_absolute_link(self, url, link):
+    """ Return the absolute version of the specified link. The URL to prepend to the link (in the
+    case that the link is a relative link) must be specified. """
+    if url.endswith('/'): url = url[:-1]
+    if link.startswith('//'): link = 'http:' + link
+    elif link.startswith('/'): link = self.remove_url_suffixes(url) + link
+    return link
+
+  def is_link_internal(self, url, link):
+    """ Returns if a specified link is a subpage of the specified URL. A link is defined as internal
+    if it begins with the homepage URL. The specified link can be absolute or relative. """
+    p = re.compile('^((//)?(https?://)?(www\.)?' + self.remove_url_affixes(url) + '|/[^/]).*$')
+    return bool(p.match(link))
+
   def get_link_tags(self, url):
-    """ Return an array of all of the link tags from the soup object that corresponds to the
+    """ Return a list of all of the link tags from the soup object that corresponds to the
     specified URL. """
     return self.soups[url].find_all('a')
 
   def get_internal_link_tags(self, url):
-    """ Return an array of all of the internal link tags from the soup object that corresponds to
-    the specified URL. A URL is defined as internal if it begins with the homepage URL. """
-    trimmed_url = re.sub('(https?://)?(www\.)?', '', url)
+    """ Return a list of all of the internal link tags from the soup object that corresponds to
+    the specified URL. """
     link_tags = [tag for tag in self.get_link_tags(url) if tag.get('href') is not None]
-    p = re.compile('^((//)?(https?://)?(www\.)?' + trimmed_url + '|/[^/]).*$')
-    return [link for link in link_tags if p.match(link.get('href'))]
+    return [link_tag for link_tag in link_tags if self.is_link_internal(url, link_tag.get('href'))]
 
   def get_internal_links(self, url):
-    """ Return an array of all internal links from the soup object that corresponds to the specified
+    """ Return a list of all internal links from the soup object that corresponds to the specified
     URL. Modify the links from the tags by making them absolute, rather than relative, URLs. """
     internal_link_tags = self.get_internal_link_tags(url)
-    internal_links = [tag.get('href') for tag in internal_link_tags]
-    internal_links = ['http:' + link if link.startswith('//') else link for link in internal_links]
-    url = re.sub('/$', '', url)
-    internal_links = [url + link if link.startswith('/') else link for link in internal_links]
+    internal_links = [self.get_absolute_link(url, tag.get('href')) for tag in internal_link_tags]
     return internal_links
 
   def add_random_internal_url(self, url):
@@ -69,17 +95,17 @@ class HTMLParser:
       self.add_url(internal_link)
 
   def get_img_tags(self, url):
-    """ Return an array of all of the img tags from the soup object that corresponds to the
+    """ Return a list of all of the img tags from the soup object that corresponds to the
     specified URL. """
     return self.soups[url].find_all('img')
 
   def get_header_tags(self, url):
-    """ Return an array of all of the header tags from the soup object that corresponds to the
+    """ Return a list of all of the header tags from the soup object that corresponds to the
     specified URL. """
     return self.soups[url].find_all(re.compile('^h[1-6]$'))
 
   def get_bad_link_label_notices(self, url):
-    """ Return an array of AccessibilityNotices for all bad link labels for the specified URL. """
+    """ Return a list of AccessibilityNotices for all bad link labels for the specified URL. """
     bad_link_label_notices = []
     for link_tag in self.get_link_tags(url):
       if (link_tag.text.lower() in self.bad_link_labels):
@@ -89,7 +115,7 @@ class HTMLParser:
     return bad_link_label_notices
 
   def get_bad_alt_text_notices(self, url):
-    """ Return an array of AccessibilityNotices for all bad alt texts for the specified URL. """
+    """ Return a list of AccessibilityNotices for all bad alt texts for the specified URL. """
     bad_alt_text_notices = []
     for img_tag in self.get_img_tags(url):
       alt_text = img_tag.get('alt', '')
@@ -103,7 +129,7 @@ class HTMLParser:
     return bad_alt_text_notices
 
   def get_bad_header_notices(self, url):
-    """ Return an array of AccessibilityNotices for all bad headers for the specified URL. """
+    """ Return a list of AccessibilityNotices for all bad headers for the specified URL. """
     bad_header_notices = []
     h_tags = self.get_header_tags(url)
     for i in range(len(h_tags)):
@@ -119,6 +145,23 @@ class HTMLParser:
               'This header tag skipped at least one heading level. It should be changed to an h' +
               str(prev_h+1) + ' header.'))
     return bad_header_notices
+
+  def get_navbar_links(self, url):
+    """ Return a list of all links found in navigational bars. """
+    nav_tags = []
+    nav_links = set()
+    for nav_tag in self.soups[url].find_all('ul'):
+      if re.match('.*nav.*', str(nav_tag.attrs)):
+        nav_tags.append(nav_tag)
+    for nav_tag in self.soups[url].find_all('nav'):
+      nav_tags.append(nav_tag)
+    for nav_tag in nav_tags:
+      for link_tag in nav_tag.find_all('a'):
+        link = link_tag.get('href')
+        if self.is_link_internal(url, link): nav_links.add(self.get_absolute_link(url, link))
+    nav_links = list(nav_links)
+    nav_links.sort(key=len)
+    return nav_links
 
   def run(self):
     """ Return AccessibilityNotices in a parsable form to be displayed with Flask. An example of
@@ -136,7 +179,7 @@ class HTMLParser:
       }
     }
     """
-    self.add_random_internal_url(self.urls[0])
+    # self.add_random_internal_url(self.urls[0])
     url_notices = {}
     for url in self.urls:
       notices = {}
