@@ -10,6 +10,7 @@ from enums import Flavor, Severity
 
 class HTMLParser:
   def __init__(self, url, config_path='../config/'):
+    """ Call self.add_url() """
     self.urls = []
     self.soups = {}
 
@@ -19,12 +20,15 @@ class HTMLParser:
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
 
   def add_url(self, url):
+    """ Add the specified url to self.urls and add the corresponding soup object to self.soups. """
     self.urls.append(url)
     r = requests.get(url)
     html = str(r.content)
     self.soups[url] = BeautifulSoup(html, 'html.parser')
 
   def txt_to_array(self, filename):
+    """ Look for the specified filename in our config folder, parse it, and return the contents as
+    an array. The file should be newline delimited. """
     curr_dir = os.path.dirname(__file__)
     path = curr_dir + '/' + self.config_path + filename
     with open(path, 'r') as f:
@@ -33,40 +37,49 @@ class HTMLParser:
       f.close()
     return array
 
-  def write(self, url, filename):
-    with open(filename, 'w') as f:
-      f.write(self.soups[url].prettify())
-      f.close()
-
   def get_link_tags(self, url):
+    """ Return an array of all of the link tags from the soup object that corresponds to the
+    specified URL. """
     return self.soups[url].find_all('a')
 
   def get_internal_link_tags(self, url):
+    """ Return an array of all of the internal link tags from the soup object that corresponds to
+    the specified URL. A URL is defined as internal if it begins with the homepage URL. """
     trimmed_url = re.sub('(https?://)?(www\.)?', '', url)
     link_tags = [tag for tag in self.get_link_tags(url) if tag.get('href') is not None]
     p = re.compile('^((//)?(https?://)?(www\.)?' + trimmed_url + '|/[^/]).*$')
     return [link for link in link_tags if p.match(link.get('href'))]
 
   def get_internal_links(self, url):
+    """ Return an array of all internal links from the soup object that corresponds to the specified
+    URL. Modify the links from the tags by making them absolute, rather than relative, URLs. """
     internal_link_tags = self.get_internal_link_tags(url)
     internal_links = [tag.get('href') for tag in internal_link_tags]
     internal_links = ['http:' + link if link.startswith('//') else link for link in internal_links]
+    url = re.sub('/$', '', url)
     internal_links = [url + link if link.startswith('/') else link for link in internal_links]
     return internal_links
 
   def add_random_internal_url(self, url):
+    """ Call self.add_url() on one randomly selected link from a list of all internal links from
+    the specified URL. """
     internal_links = [link for link in self.get_internal_links(url) if link not in self.urls]
     if internal_links:
       internal_link = random.choice(internal_links)
       self.add_url(internal_link)
 
   def get_img_tags(self, url):
+    """ Return an array of all of the img tags from the soup object that corresponds to the
+    specified URL. """
     return self.soups[url].find_all('img')
 
   def get_header_tags(self, url):
+    """ Return an array of all of the header tags from the soup object that corresponds to the
+    specified URL. """
     return self.soups[url].find_all(re.compile('^h[1-6]$'))
 
   def get_bad_link_label_notices(self, url):
+    """ Return an array of AccessibilityNotices for all bad link labels for the specified URL. """
     bad_link_label_notices = []
     for link_tag in self.get_link_tags(url):
       if (link_tag.text.lower() in self.bad_link_labels):
@@ -76,6 +89,7 @@ class HTMLParser:
     return bad_link_label_notices
 
   def get_bad_alt_text_notices(self, url):
+    """ Return an array of AccessibilityNotices for all bad alt texts for the specified URL. """
     bad_alt_text_notices = []
     for img_tag in self.get_img_tags(url):
       alt_text = img_tag.get('alt', '')
@@ -89,6 +103,7 @@ class HTMLParser:
     return bad_alt_text_notices
 
   def get_bad_header_notices(self, url):
+    """ Return an array of AccessibilityNotices for all bad headers for the specified URL. """
     bad_header_notices = []
     h_tags = self.get_header_tags(url)
     for i in range(len(h_tags)):
@@ -105,8 +120,22 @@ class HTMLParser:
               str(prev_h+1) + ' header.'))
     return bad_header_notices
 
-  def waqc(self):
-    # TODO check if no subpages, check if got a repeated subpage
+  def run(self):
+    """ Return AccessibilityNotices in a parsable form to be displayed with Flask. An example of
+    the data structure returned by this function is as follows:
+    {
+      'https://www.carroll.org': {
+        'Link Label': [AccessibilityNotice],
+        'Alt Text': [AccessibilityNotice],
+        'Header': [AccessibilityNotice, AccessibilityNotice]
+      },
+      'https://carroll.org/help/volunteer-your-time/': {
+        'Link Label': [],
+        'Alt Text': [AccessibilityNotice, AccessibilityNotice],
+        'Header': [AccessibilityNotice]
+      }
+    }
+    """
     self.add_random_internal_url(self.urls[0])
     url_notices = {}
     for url in self.urls:
