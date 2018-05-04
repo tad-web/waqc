@@ -62,9 +62,21 @@ class HTMLParser:
     elif link.startswith('/'): link = self.remove_url_suffixes(url) + link
     return link
 
+  def are_urls_equal(self, url_1, url_2):
+    """ Return true if the two URLs are the same once their prefixes and ending '/' have been
+    removed. """
+    url_1 = self.remove_url_prefixes(url_1)
+    if url_1.endswith('/'): url_1 = url_1[:-1]
+    url_2 = self.remove_url_prefixes(url_2)
+    if url_2.endswith('/'): url_2 = url_2[:-1]
+    return url_1 == url_2
+
+
   def is_link_internal(self, url, link):
     """ Returns if a specified link is a subpage of the specified URL. A link is defined as internal
-    if it begins with the homepage URL. The specified link can be absolute or relative. """
+    if it begins with the homepage URL, but does not equal the homepage URL. The specified link can
+    be absolute or relative. """
+    if self.are_urls_equal(url, link): return False
     p = re.compile('^((//)?(https?://)?(www\.)?' + self.remove_url_affixes(url) + '|/[^/]).*$')
     return bool(p.match(link))
 
@@ -146,22 +158,27 @@ class HTMLParser:
               str(prev_h+1) + ' header.'))
     return bad_header_notices
 
+  def get_navbar_tags(self, url):
+    navbar_tags = []
+    for navbar_tag in self.soups[url].find_all('ul'):
+      if re.match('.*nav.*', str(navbar_tag.attrs)):
+        navbar_tags.append(navbar_tag)
+    for navbar_tag in self.soups[url].find_all('nav'):
+      navbar_tags.append(navbar_tag)
+    return navbar_tags
+
   def get_navbar_links(self, url):
     """ Return a list of all links found in navigational bars. """
-    nav_tags = []
-    nav_links = set()
-    for nav_tag in self.soups[url].find_all('ul'):
-      if re.match('.*nav.*', str(nav_tag.attrs)):
-        nav_tags.append(nav_tag)
-    for nav_tag in self.soups[url].find_all('nav'):
-      nav_tags.append(nav_tag)
-    for nav_tag in nav_tags:
-      for link_tag in nav_tag.find_all('a'):
+    navbar_tags = self.get_navbar_tags(url)
+    navbar_links = set()
+    for navbar_tag in navbar_tags:
+      for link_tag in navbar_tag.find_all('a'):
         link = link_tag.get('href')
-        if self.is_link_internal(url, link): nav_links.add(self.get_absolute_link(url, link))
-    nav_links = list(nav_links)
-    nav_links.sort(key=len)
-    return nav_links
+        if link is not None and self.is_link_internal(url, link):
+          navbar_links.add(self.get_absolute_link(url, link))
+    navbar_links = list(navbar_links)
+    navbar_links.sort(key=len)
+    return navbar_links
 
   def run(self):
     """ Return AccessibilityNotices in a parsable form to be displayed with Flask. An example of
