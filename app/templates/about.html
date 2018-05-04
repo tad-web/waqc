@@ -2,8 +2,65 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="header">
   <h1>About WAQC</h1>
-  <p>There's nothing here yet!</p>
+</div>
+<div class="container">
+  <p>
+    WAQC is a webapp that will check a website for some basic accessibility violations. Unlike many other accessibility checkers, we are built to be accessible and the report we generate is not technical. We built this for and with our community partner from the Carroll Center for the Blind in the context of a project course at Olin College of Engineering.
+  </p>
+  <p>
+    We were motivated to learn about web accessibility and participate in making the internet more accessible for multiple reasons. For one, it is important to know how the world around us treats everyone, including the digital world. This allows us to move forward to create an equal platform for everyone. Secondly, as engineers we spend a lot of time online and potentially will have our work presented in digital space. We wanted to learn how to make our future work more accessible to others. Thirdly, we wanted to create a tool that our community partner could use to assess more websites and broaden his reach. This way, we can hopefully amplify his abilities by allowing him to do more in less time.
+  </p>
+  <p>
+    If you want to help WAQC grow, <a href="https://github.com/tad-web/waqc">check out our source code on Github</a>!
+  </p>
+  <div class="docs-header">
+    <center>
+      <h2>Process</h2>
+    </center>
+  </div>
+  <p>
+    We worked closely with Bruce to generate ideas, choose valuable potential violations to check for, and make sure our tool is accessible as we built it. We met weekly and then nearly every other day to run through the current state of the tool and make decisions together for next steps. Because we so closely codesigned this tool with Bruce, many of our decisions are tailored to his specific use case, but we hope WAQC can be useful to others as well. This whole process was completed from March to May of 2018.
+  </p>
+  <p>
+    We created a web application in python using primarily Flask and Jinja2 and hosted it with Heroku. Please <a href="https://github.com/tad-web/waqc">check out our source code on Github</a> for more detailed implementation information and instructions to install and run our project locally.
+  </p>
+  <div class="docs-header">
+    <center>
+      <h2>Our Team</h2>
+    </center>
+  </div>
+  <h3>Developers</h3>
+  <div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Lisa's face, currently a gingerbread man">
+      <p>
+        Lisa studies electrical engineering at Olin College (Class 2018). This may be the last time Lisa touches front end software for a long time, as she normally hides in radio frequencies.
+      </p>
+    </div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Shane's face, currently a gingerbread man">
+      <p>
+        Shane is a robotics engineer in Olin College’s class of 2018. He likes the internet and thinks everyone should have access to the things they like.
+      </p>
+    </div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Louise's face, currently a gingerbread man">
+    </div>
+    <p>
+      Louise is a junior studying human-centered software engineering. They learned a lot about (accessible) web development in this project and will probably never touch Jinja templates again.
+    </p>
+  </div>
+
+
+  <h3>Partners</h3>
+  <p>
+    For this project, we partnered with Bruce Howell, who is the Accessibility Services Manager for the Carroll Center for the Blind’s Web Accessibility business. He provides evaluations for a company based on their website’s accessibility to people with vision loss. The Carroll Center is passionate about, among other things, providing computer training for all levels, whether it be basic, intensive, for a job or for college, as well as helping companies with websites make their space more accessible. We were lucky to have so much of their time and collaboration in this project and are thankful for the ability to codesign the website with Bruce.
+  </p>
+  <p>
+    This website is the project for our course Technology, Accessibility, Design at Olin College in the Spring 2018 semester. We were supported by our Professors, Caitrin Lynch and Paul Ruvolo. Caitrin is an anthropologist that teaches various humanities courses at Olin College. Paul is a computer scientists who teaches various computer engineering and robotics courses at Olin College. To learn more, see <a href="http://www.olin.edu/faculty/profile/caitrin-lynch/">Caitrin’s biography</a> or <a href="http://www.olin.edu/faculty/profile/paul-ruvolo">Paul’s biography</a> on the Olin website. Together, they collaborated on this course, Technology, Accessibility, Design, first offered in Spring 2018.
+  </p>
+
 </div>
 {% endblock %}

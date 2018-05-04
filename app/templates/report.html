@@ -2,10 +2,14 @@
 {% block title %}Report{% endblock %}
 
 {% block content %}
-<div class="container">
-  <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
-  <div id="toCopy">
+<div class="header">
   <h1>Report Output</h1>
+</div>
+<div class="container">
+  <center>
+    <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
+    <div id="toCopy">
+  </center>
   {% for url in url_notices %}
     {% if loop.first %}
       <h2>Homepage: <a href="{{ url }}">{{ url }}</a></h2>
