@@ -14,6 +14,7 @@ class Flavor(Enum):
   ALT_TEXT = 2
   COLOR_CONTRAST = 3
   HEADER = 4
+  FORM_LABEL = 5
 
   def __str__(self):
     return ' '.join([word.title() for word in self.name.split('_')])
