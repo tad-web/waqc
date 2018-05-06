@@ -1,0 +1,13 @@
+date
+datetime-local
+email
+text
+month
+number
+password
+search
+tel
+time
+url
+week
+no type
