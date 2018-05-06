@@ -1,19 +1,26 @@
 <html lang="en">
   <head>
     <title>{% block title %}{% endblock %} - Web Accessibility Quick Check</title>
-    <script type="text/javascript"
-      src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css')}}">
   </head>
   <body>
-    <div>
-      Web Accessibility Quick Check
-      <a href="/" style="float:right">Home</a>
-    </div>
-    <hr>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="navbar-list">
+          <li class="navbar-item"><a class="navbar-link" href="/">Home</a></li>
+          <li class="navbar-item"><a class="navbar-link" href="/about">About</a></li>
+        </ul>
+      </div>
+    </nav>
     {% block content %}{% endblock %}
   </body>
-  <footer>
-    <img src="http://carroll.org/wp-content/uploads/2014/08/logo_customizr1.png" alt="Logo for Carroll Center for the Blind" height="100" hspace="100">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFKZMbIRnq1p1678_ec3FLBL-80bXHnLnkKO4BAIVcMmwKD-o20Q" alt="Logo for Olin College of Engineering" height="90" hspace="100" align="right">
-  </footer>
+  <div class="container">
+    <footer>
+      <img src="http://carroll.org/wp-content/uploads/2014/08/logo_customizr1.png" alt="Logo for Carroll Center for the Blind" height="100" hspace="100">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFKZMbIRnq1p1678_ec3FLBL-80bXHnLnkKO4BAIVcMmwKD-o20Q" alt="Logo for Olin College of Engineering" height="90" hspace="100" align="right">
+    </footer>
+  </div>
 </html>

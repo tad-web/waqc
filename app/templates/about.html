@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}About{% endblock %}
+
+{% block content %}
+<div class="header">
+  <h1>About WAQC</h1>
+</div>
+<div class="container">
+  <p>
+    The Web Accessibility Quick Checker, or WAQC, is a webapp that will check a website for some basic accessibility violations. Unlike many other accessibility checkers, WAQC itself is built to be as accessible as possible. The interface is simple, the output is not meant solely for individuals with technical backgrounds, and all parts of this tool are accessible to users with screen readers. We built this for and with our community partner, the Carroll Center for the Blind, in the context of a project for the Technology, Accessibility, and Design course at Olin College of Engineering.
+  </p>
+  <p>
+    WAQC's purpose is two-fold. Primarily, it serves as a digital tool to improve the Carroll Center's ability to more quickly and automatically inspect the accessibility of a defined set of elements on any website. This tool will enable our Community Partner to reach a larger volume of potential clients more rapidly and cost-effectively. WAQC's second, but perhaps equally important purpose, is to act as a medium through which we, as apiring engineers, can learn more about the accessibility of technology in the world around us and perhaps serve as a positive example for teaching others about the importance of accessibility.
+  </p>
+  <p>
+    If you want to help WAQC grow, <a href="https://github.com/tad-web/waqc">check out our source code on Github</a>!
+  </p>
+  <div class="docs-header">
+    <center>
+      <h2>Process</h2>
+    </center>
+  </div>
+  <p>
+  We worked closely with our community partner, <a href="https://carroll.org/">the Carroll Center for the Blind</a>, to generate ideas, select some appropriate accessibility barriers for our tool to check, and make sure our tool is accessible as we built it. We met weekly and then nearly every other day to run through the current state of the tool and make decisions together for next steps. Because we so closely co-designed this tool with the Carroll Center, many of our decisions are tailored to their specific use case, but we hope WAQC can be useful to others as well. This entire process, from design to implementation, was completed from March to May of 2018.
+  </p>
+  <p>
+    We created a web application in python using primarily Flask and Jinja2, and hosted it with Heroku. Please <a href="https://github.com/tad-web/waqc">check out our source code on Github</a> for more detailed implementation information and instructions to install and run our project locally.
+  </p>
+  <div class="docs-header">
+    <center>
+      <h2>Our Team</h2>
+    </center>
+  </div>
+  <h3>Developers</h3>
+  <div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Lisa's face, currently a gingerbread man">
+      <p>
+        Lisa studies electrical engineering at Olin College (Class 2018). This may be the last time Lisa touches front end software for a long time, as she normally hides in radio frequencies.
+      </p>
+    </div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Shane's face, currently a gingerbread man">
+      <p>
+        Shane is a robotics engineer in Olin College’s class of 2018. He likes the internet and thinks everyone should have access to the things they like.
+      </p>
+    </div>
+    <div class="one-third column">
+      <img class="u-full-width" src="{{ url_for('static', filename='images/ginger.png') }}" alt="Future Louise's face, currently a gingerbread man">
+    </div>
+    <p>
+      Louise is a junior studying human-centered software engineering. They learned a lot about (accessible) web development in this project and will probably never touch Jinja templates again.
+    </p>
+  </div>
+
+
+  <h3>Partners</h3>
+  <p>
+  Throughout this project, Bruce Howell, the <a href="https://carroll.org/accessibility-services/">Carroll Center's Accessibility Services</a> Manager, served as our liaison to the Carroll Center. The Carroll Center evaluates websites and mobile applications for their clients to help improve accessibility for persons who are blind or otherwise disabled. Since The Carroll Center, as a blindness rehabilitation agency, teaches individuals who are blind or visually impaired to use assistive technologies, they are also commited to helping those who design and build websites and mobile applications to make them more accessible. We were lucky to have so much of the Carroll Center's time and collaboration in this project and are thankful for the ability to co-design the website with them.
+  </p>
+  <p>
+    This accessibility checker tool is a project for our course Technology, Accessibility, Design at Olin College of Engineering in the Spring 2018 semester. We were supported by our two professors, <a href="http://www.olin.edu/faculty/profile/caitrin-lynch/">Caitrin Lynch</a> and <a href="http://www.olin.edu/faculty/profile/paul-ruvolo">Paul Ruvolo</a>. Together, they collaborated on this course, Technology, Accessibility, Design, first offered in Spring 2018.
+  </p>
+
+</div>
+{% endblock %}
