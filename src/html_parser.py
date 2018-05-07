@@ -232,6 +232,7 @@ class HTMLParser:
     url_notices = {}
     for url in self.urls:
       notices = {}
+      notices[str(Flavor.SKIP_LINK)] = self.get_skip_links(url)
       notices[str(Flavor.LINK_LABEL)] = self.get_bad_link_label_notices(url)
       notices[str(Flavor.ALT_TEXT)] = self.get_bad_alt_text_notices(url)
       notices[str(Flavor.HEADER)] = self.get_bad_header_notices(url)
