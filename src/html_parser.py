@@ -20,6 +20,7 @@ class HTMLParser:
 
     self.config_path = config_path
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
+    self.edit_field_types = self.txt_to_array('edit_field_types.txt')
 
   def add_url(self, url):
     """ Add the specified url to self.urls and add the corresponding soup object to self.soups. """
@@ -116,6 +117,11 @@ class HTMLParser:
     specified URL. """
     return self.soups[url].find_all(re.compile('^h[1-6]$'))
 
+  def get_form_tags(self, url):
+    """ Return a list of all the form tags from the soup object that corresponds to the
+    specified URL. """
+    return self.soups[url].find_all('form')
+
   def get_bad_link_label_notices(self, url):
     """ Return a list of AccessibilityNotices for all bad link labels for the specified URL. """
     bad_link_label_notices = []
@@ -157,6 +163,22 @@ class HTMLParser:
               'This header tag skipped at least one heading level. It should be changed to an h' +
               str(prev_h+1) + ' header.'))
     return bad_header_notices
+
+  def get_bad_form_label_notices(self, url):
+    """ Return a list of AccessibilityNotices for all bad forms for the specified URL. """
+    bad_field_labels_notices = []
+    f_tags = self.get_form_tags(url)
+    # Dictionary where k:v is form id : list of inputs of text-like fields
+    forms_inputs_dict = {form.get('id'):[field for field in form.find_all('input') if field.get('type', 'no type') in self.edit_field_types] for form in f_tags}
+    # Dictionary where k:v is form id: list of labels of all things
+    forms_labels_dict = {form.get('id'):[label.get('for') for label in form.find_all('label')] for form in f_tags}
+    for input_field in forms_inputs_dict.items():
+      for tag in input_field[1]:
+        if not tag.get('aria-label'):
+          if not tag.get('id') in forms_labels_dict[input_field[0]]:
+            bad_field_labels_notices.append(AccessibilityNotice(tag, Flavor.FORM_LABEL, Severity.WARNING,
+                'This form entry is not labeled. If it is visible, it should be labeled appropriately.'))
+    return bad_field_labels_notices
 
   def get_navbar_tags(self, url):
     navbar_tags = []
@@ -203,5 +225,6 @@ class HTMLParser:
       notices[str(Flavor.LINK_LABEL)] = self.get_bad_link_label_notices(url)
       notices[str(Flavor.ALT_TEXT)] = self.get_bad_alt_text_notices(url)
       notices[str(Flavor.HEADER)] = self.get_bad_header_notices(url)
+      notices[str(Flavor.FORM_LABEL)] = self.get_bad_form_label_notices(url)
       url_notices[url] = notices
     return url_notices
