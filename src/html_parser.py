@@ -133,17 +133,22 @@ class HTMLParser:
             without context.'))
     return bad_link_label_notices
 
-    def get_skip_links(self, url):
-      """Return whether or not we've identified a skip link within the html """
-      skip_link_notice =  []
-      for link_tag in self.get_link_tags(url):
-        if (link_tag.text.lower() in self.skip_link_labels):
-          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.SKIP_LINK,
-          Severity.EXCELLENT, 'This skip link is very useful and accessible.'))
-        if (len(self.skip_link_labels) == 0):
-          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.SKIP_LINK,
-          Severity.WARNING, "We didn't find a skip link. Please ensure you have a skip to main content button available, especially if you have a large navigation bar."))
-      return skip_link_notice
+  def get_skip_link_tags(self, url):
+    """ Return a list of link tags that we think are skip links. """
+    skip_link_tags = []
+    for link_tag in self.get_link_tags(url):
+      if (link_tag.text.lower() in self.skip_link_labels):
+        skip_link_tags.append(link_tag)
+    return skip_link_tags
+
+  def get_bad_skip_link_notices(self, url):
+    """ Return a single AccessibilityNotice if we didn't find any skip links. """
+    bad_skip_link_notices = []
+    if len(self.get_skip_link_tags(url)) == 0:
+      bad_skip_link_notices.append(AccessibilityNotice("", Flavor.SKIP_LINK, Severity.WARNING, "We \
+          didn't find a skip link. Please ensure you have a skip to main content button available, \
+          especially if you have a large navigation bar."))
+    return bad_skip_link_notices
 
   def get_bad_alt_text_notices(self, url):
     """ Return a list of AccessibilityNotices for all bad alt texts for the specified URL. """
@@ -231,11 +236,10 @@ class HTMLParser:
       }
     }
     """
-    # self.add_random_internal_url(self.urls[0])
     url_notices = {}
     for url in self.urls:
       notices = {}
-      notices[str(Flavor.SKIP_LINK)] = self.get_skip_links(url)
+      notices[str(Flavor.SKIP_LINK)] = self.get_bad_skip_link_notices(url)
       notices[str(Flavor.LINK_LABEL)] = self.get_bad_link_label_notices(url)
       notices[str(Flavor.ALT_TEXT)] = self.get_bad_alt_text_notices(url)
       notices[str(Flavor.HEADER)] = self.get_bad_header_notices(url)
