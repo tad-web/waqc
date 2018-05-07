@@ -130,7 +130,7 @@ class HTMLParser:
       if (link_tag.text.lower() in self.bad_link_labels):
         bad_link_label_notices.append(AccessibilityNotice(link_tag, Flavor.LINK_LABEL,
             Severity.WARNING, 'This link label is potentially not descriptive enough \
-            without context.'))
+            out of page context.'))
     return bad_link_label_notices
 
   def get_skip_link_tags(self, url):
@@ -145,9 +145,9 @@ class HTMLParser:
     """ Return a single AccessibilityNotice if we didn't find any skip links. """
     bad_skip_link_notices = []
     if len(self.get_skip_link_tags(url)) == 0:
-      bad_skip_link_notices.append(AccessibilityNotice("", Flavor.SKIP_LINK, Severity.WARNING, "We \
-          didn't find a skip link. Please ensure you have a skip to main content button available, \
-          especially if you have a large navigation bar."))
+      bad_skip_link_notices.append(AccessibilityNotice("", Flavor.SKIP_LINK, Severity.WARNING, "There \
+          may not be a skip link on this page. Please ensure that there is a skip link, especially if \
+          there is a large navigation menu."))
     return bad_skip_link_notices
 
   def get_bad_alt_text_notices(self, url):
