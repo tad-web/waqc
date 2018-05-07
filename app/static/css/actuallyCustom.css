@@ -1,0 +1,15 @@
+.toggleExtraNoticesBtn {
+  cursor: pointer;
+}
+
+.extraNotices.hidden {
+  display: none;
+}
+
+button span {
+  height: 1px;
+  width: 1px;
+  position: absolute;
+  overflow: hidden;
+  top: -10px;
+}
