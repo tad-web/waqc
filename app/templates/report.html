@@ -8,16 +8,18 @@
 <div class="container">
   <center>
     <button type="button" onclick="copyToClipboard('toCopy')">Copy Report Output</button>
-    <div id="toCopy">
   </center>
+  <div id="toCopy">
   {% for url in url_notices %}
-    {% if loop.first %}
+    {% set url_loop = loop %}
+    {% if url_loop.first %}
       <h2>Homepage: <a href="{{ url }}">{{ url }}</a></h2>
     {% else %}
       <h2>Subpage: <a href="{{ url }}">{{ url }}</a></h2>
     {% endif %}
     {% set notices_dict = url_notices[url] %}
     {% for notice_type in notices_dict %}
+      {% set notice_type_loop = loop %}
       {% set curr_type_notices = notices_dict[notice_type] %}
       {% if curr_type_notices | length == 1 %}
         <h3>{{ notice_type }}s: {{ curr_type_notices|length }} Violation Found</h3>
@@ -27,10 +29,22 @@
       {% if not curr_type_notices %}
         <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
       {% else %}
+        {% if curr_type_notices|length > 3 %}
+        <a class="toggleExtraNoticesBtn" id="{{ url_loop.index0 }}-{{ notice_type_loop.index0 }}">Toggle extra {{ notice_type }} violations for {{ url }}</a>
+          <br><br>
+        {% endif %}
         {% for notice in curr_type_notices %}
-          <p>{{ notice.tag }} </p>
-          <p>{{ notice.explanation }} </p>
-          {% if not loop.last %}<br>{% endif %}
+          {% if loop.index0 <= 2 %}
+            <p>{{ notice.tag }}</p>
+            <p>{{ notice.explanation }}</p>
+            {% if not loop.last %}<br>{% endif %}
+          {% else %}
+          <div class="extraNotices extra-{{ url_loop.index0 }}-{{ notice_type_loop.index0 }} hidden">
+            <p>{{ notice.tag }}</p>
+            <p>{{ notice.explanation }}</p>
+            {% if not loop.last %}<br>{% endif %}
+          </div>
+          {% endif %}
         {% endfor %}
       {% endif %}
     {% endfor %}
