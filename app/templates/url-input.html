@@ -8,11 +8,11 @@
 <div class="container">
   <p>This will check the page at the URL submitted below and a randomly selected subpage for the following potential accessibility violations:</p>
   <ul>
+    <li>Skip link check: We note if there is a link that matches an example skip link label from our <a href="https://github.com/tad-web/waqc/blob/master/config/skip_link_labels.txt">list of good skip link labels </a>. </li>
     <li>Link labels: We note if a link label matches an example poor link text from our <a href="https://github.com/tad-web/waqc/blob/master/config/bad_link_labels.txt">list of bad link labels</a>.</li>
     <li>Image alt text: We note if an image has no alt text or if the alt text contains a file extension.</li>
     <li>Header hierarchy: We note if the first header on a page is not an h1 or if header levels are skipped.</li>
     <li>Form labels: We note if an editable form in a field is unlabeled.</li>
-    <li>Skip link check: We note if there are links labelled as "Skip to Navigation" or similar, which allows a screenreader to skip to main content of a site. </li>
   </ul>
   <center>
     <form method="POST" action="/subpage-selection">
