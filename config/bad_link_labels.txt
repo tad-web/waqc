@@ -2,3 +2,5 @@ more
 read more
 next
 previous
+learn more
+see more

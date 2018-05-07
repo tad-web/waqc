@@ -2,12 +2,23 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-  <center>
+<div class="header">
   <h1>URL Input</h1>
-  <form method="POST">
-    <label for="url to check">URL to check:</label>
-    <input name="url to check" id="url to check" required aria-required="true">
-    <input type="submit" value="Submit">
-  </form>
+</div>
+<div class="container">
+  <p>This will check the page at the URL submitted below and a randomly selected subpage for the following potential accessibility violations:</p>
+  <ul>
+    <li>Link labels: We note if a link label matches an example poor link text from our <a href="https://github.com/tad-web/waqc/blob/master/config/bad_link_labels.txt">list of bad link labels</a>.</li>
+    <li>Image alt text: We note if an image has no alt text or if the alt text contains a file extension.</li>
+    <li>Header hierarchy: We note if the first header on a page is not an h1 or if header levels are skipped.</li>
+    <li>Form labels: We note if an editable form in a field is unlabeled.</li>
+  </ul>
+  <center>
+    <form method="POST" action="/subpage-selection">
+      <label for="url to check">URL to check:</label>
+      <input name="url to check" id="url to check" required aria-required="true">
+      <input type="submit" value="Submit">
+    </form>
   </center>
+</div>
 {% endblock %}
