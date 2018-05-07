@@ -21,6 +21,7 @@ class HTMLParser:
     self.config_path = config_path
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
     self.edit_field_types = self.txt_to_array('edit_field_types.txt')
+    self.skip_link_labels = self.txt_to_array('skip_link_labels.txt')
 
   def add_url(self, url):
     """ Add the specified url to self.urls and add the corresponding soup object to self.soups. """
@@ -131,6 +132,15 @@ class HTMLParser:
             Severity.WARNING, 'This link label is potentially not descriptive enough \
             without context.'))
     return bad_link_label_notices
+
+    def get_skip_links(self, url):
+    # """Return whether or not we've identified a skip link within the html """
+      skip_link_notice =  []
+      for link_tag in self.get_link_tags(url):
+        if (link_tag.text.lower() in self.skip_link_labels):
+          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.LINK_LABEL,
+          Severity.EXCELLENT, 'This skip link is very useful and accessible.'))
+      return skip_link_notice
 
   def get_bad_alt_text_notices(self, url):
     """ Return a list of AccessibilityNotices for all bad alt texts for the specified URL. """
