@@ -134,12 +134,15 @@ class HTMLParser:
     return bad_link_label_notices
 
     def get_skip_links(self, url):
-    # """Return whether or not we've identified a skip link within the html """
+      """Return whether or not we've identified a skip link within the html """
       skip_link_notice =  []
       for link_tag in self.get_link_tags(url):
         if (link_tag.text.lower() in self.skip_link_labels):
-          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.LINK_LABEL,
+          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.SKIP_LINK,
           Severity.EXCELLENT, 'This skip link is very useful and accessible.'))
+        if (len(self.skip_link_labels) == 0):
+          skip_link_notice.append(AccessibilityNotice(link_tag, Flavor.SKIP_LINK,
+          Severity.WARNING, "We didn't find a skip link. Please ensure you have a skip to main content button available, especially if you have a large navigation bar."))
       return skip_link_notice
 
   def get_bad_alt_text_notices(self, url):
