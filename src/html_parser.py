@@ -21,6 +21,7 @@ class HTMLParser:
     self.config_path = config_path
     self.bad_link_labels = self.txt_to_array('bad_link_labels.txt')
     self.edit_field_types = self.txt_to_array('edit_field_types.txt')
+    self.skip_link_labels = self.txt_to_array('skip_link_labels.txt')
 
   def add_url(self, url):
     """ Add the specified url to self.urls and add the corresponding soup object to self.soups. """
@@ -132,6 +133,23 @@ class HTMLParser:
             without context.'))
     return bad_link_label_notices
 
+  def get_skip_link_tags(self, url):
+    """ Return a list of link tags that we think are skip links. """
+    skip_link_tags = []
+    for link_tag in self.get_link_tags(url):
+      if (link_tag.text.lower() in self.skip_link_labels):
+        skip_link_tags.append(link_tag)
+    return skip_link_tags
+
+  def get_bad_skip_link_notices(self, url):
+    """ Return a single AccessibilityNotice if we didn't find any skip links. """
+    bad_skip_link_notices = []
+    if len(self.get_skip_link_tags(url)) == 0:
+      bad_skip_link_notices.append(AccessibilityNotice("", Flavor.SKIP_LINK, Severity.WARNING, "We \
+          didn't find a skip link. Please ensure you have a skip to main content button available, \
+          especially if you have a large navigation bar."))
+    return bad_skip_link_notices
+
   def get_bad_alt_text_notices(self, url):
     """ Return a list of AccessibilityNotices for all bad alt texts for the specified URL. """
     bad_alt_text_notices = []
@@ -222,10 +240,10 @@ class HTMLParser:
       }
     }
     """
-    # self.add_random_internal_url(self.urls[0])
     url_notices = {}
     for url in self.urls:
       notices = {}
+      notices[str(Flavor.SKIP_LINK)] = self.get_bad_skip_link_notices(url)
       notices[str(Flavor.LINK_LABEL)] = self.get_bad_link_label_notices(url)
       notices[str(Flavor.ALT_TEXT)] = self.get_bad_alt_text_notices(url)
       notices[str(Flavor.HEADER)] = self.get_bad_header_notices(url)
