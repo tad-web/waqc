@@ -1,3 +1,14 @@
+$(document).on("click", ".toggleExtraNoticesBtn", function(e) {
+  const btn = e.target
+  $(`.extra-${btn.id}`).toggleClass('hidden');
+
+  const url = $("h2")[btn.getAttribute("data-url-index")].textContent.split(" ")[1];
+  const noticeType = $("h3")[btn.getAttribute("data-notice-type-index")].textContent.split("s:")[0];
+  if($(`.extra-${btn.id}`).is(':hidden')) $(`#${btn.id}`).text(`Show all ${noticeType} violations for ${url}`);
+  else $(`#${btn.id}`).text(`Hide all but three ${noticeType} violations for ${url}`);
+});
+
+
 /*
  * Selects all of the text of all of the children within the element at the specified id, copies
  *   that text to the clipboard, and then unselects all the text
