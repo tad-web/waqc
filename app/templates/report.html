@@ -30,7 +30,7 @@
         <p>Our quick check found no {{ notice_type }} accessibility violations!</p>
       {% else %}
         {% if curr_type_notices|length > 3 %}
-        <a class="toggleExtraNoticesBtn" id="{{ url_loop.index0 }}-{{ notice_type_loop.index0 }}">Toggle extra {{ notice_type }} violations for {{ url }}</a>
+        <button class="toggleExtraNoticesBtn" id="{{ url_loop.index0 }}-{{ notice_type_loop.index0 }}" data-url-index="{{ url_loop.index0 }}" data-notice-type-index="{{ notice_type_loop.index0 }}">Show all {{ notice_type }} violations for {{ url }}</button>
           <br><br>
         {% endif %}
         {% for notice in curr_type_notices %}

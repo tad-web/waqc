@@ -1,6 +1,11 @@
 $(document).on("click", ".toggleExtraNoticesBtn", function(e) {
-  const id = e.target.id
-  $(`.extra-${id}`).toggleClass('hidden');
+  const btn = e.target
+  $(`.extra-${btn.id}`).toggleClass('hidden');
+
+  const url = $("h2")[btn.getAttribute("data-url-index")].textContent.split(" ")[1];
+  const noticeType = $("h3")[btn.getAttribute("data-notice-type-index")].textContent.split("s:")[0];
+  if($(`.extra-${btn.id}`).is(':hidden')) $(`#${btn.id}`).text(`Show all ${noticeType} violations for ${url}`);
+  else $(`#${btn.id}`).text(`Hide all but three ${noticeType} violations for ${url}`);
 });
 
 
