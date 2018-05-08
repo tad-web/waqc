@@ -10,7 +10,7 @@ For more information on our design methods, ideas and motivation, please see the
 
 ## Setup for the program:
 
-All of these instructions are meant for Ubuntu 16. They are likely supported on other forms of Ubuntu and easily translated into other forms of Linux. They are also similar to the instructions for Windows users, but certain pieces of software, like postgreSQL, are much harder to install on Windows.
+All of these instructions are meant for Ubuntu 16. They are likely supported on other forms of Ubuntu and easily translated into other forms of Linux. They are also similar to the instructions for Windows users.
 
 ### pipenv
 
