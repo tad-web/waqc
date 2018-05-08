@@ -21,6 +21,13 @@ $ sudo apt update
 $ sudo apt install pipenv
 ```
 
+### To run the program:
+
+```bash
+$ python app/routes.py
+```
+
+
 ## Sources
 
 A lot our documentation is borrowed from [here](https://github.com/HALtheWise/baby-harvester/wiki/Local-Gateway-Development "BabyHarvester wiki").
