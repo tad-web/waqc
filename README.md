@@ -19,19 +19,13 @@ $ sudo apt install software-properties-common python-software-properties
 $ sudo add-apt-repository ppa:pypa/ppa
 $ sudo apt update
 $ sudo apt install pipenv
+$ pipenv install
 ```
 
-### To run the program:
+## Run:
+
+The following command will host a local version of our tool. You can view it by navigating to `localhost:5000` in your browser.
 
 ```bash
 $ python app/routes.py
 ```
-
-
-## Sources
-
-A lot our documentation is borrowed from [here](https://github.com/HALtheWise/baby-harvester/wiki/Local-Gateway-Development "BabyHarvester wiki").
-
-## Limitations
-
-At the end of the project, we will post our limitations here.
