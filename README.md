@@ -30,3 +30,11 @@ The following command will host a local version of our tool. You can view it by 
 ```bash
 $ python app/routes.py
 ```
+
+## General background:
+
+fill in the background of our web app here
+
+## Heroku documentation:
+
+Navigate to [Heroku's documentation website](https://devcenter.heroku.com/ "Link to Heroku documentation").
