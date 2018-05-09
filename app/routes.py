@@ -28,7 +28,8 @@ def url_input_post():
   session['urls'].append(url)
   navbar_links = HTMLParser([url]).get_navbar_links(url)
   if navbar_links:
-    return render_template('subpage-selection.html', links=navbar_links)
+    navbar_links = ['None'] + navbar_links
+    return render_template('subpage-selection.html', url=url, links=navbar_links)
   else:
     url_notices = HTMLParser(session['urls']).run()
     return render_template('report.html', url_notices=url_notices )
@@ -36,7 +37,8 @@ def url_input_post():
 @app.route('/report-output', methods=['POST'])
 def subpage_selection_post():
   url = request.form['subpage to check']
-  session['urls'].append(url)
+  if url != 'None':
+    session['urls'].append(url)
   url_notices = HTMLParser(session['urls']).run()
   return render_template('report.html', url_notices=url_notices )
   # try:

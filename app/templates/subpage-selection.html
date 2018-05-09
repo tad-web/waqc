@@ -5,6 +5,7 @@
 <div class="container">
   <center>
     <h1>Subpage Selection</h1>
+    The drop-down menu below shows links from the navigational bar of <a href="{{ url }}">{{ url }}</a>. Select one of the links to also check that page for accessibility violations, or select "None" to not check any subpage.
     <form method="POST" action="/report-output">
       <label for="subpage to check">Subpage to check:</label>
       <select name="subpage to check" id="subpage to check" required aria-required="true">
