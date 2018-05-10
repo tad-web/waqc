@@ -157,11 +157,11 @@ class HTMLParser:
       alt_text = img_tag.get('alt')
       if alt_text is None:
         bad_alt_text_notices.append(AccessibilityNotice(img_tag, Flavor.ALT_TEXT,
-            Severity.WARNING, 'This img tag has an empty alt text attribute. If this image is not \
-                decorative, then it should have descriptive alt text.'))
+            Severity.ERROR, 'This img tag has no alt text.'))
       elif alt_text == '':
         bad_alt_text_notices.append(AccessibilityNotice(img_tag, Flavor.ALT_TEXT,
-            Severity.ERROR, 'This img tag has no alt text.'))
+            Severity.WARNING, 'This img tag has an empty alt text attribute. If this image is not \
+                decorative, then it should have descriptive alt text.'))
       elif alt_text.lower().endswith(('png', 'jpg')):
         bad_alt_text_notices.append(AccessibilityNotice(img_tag, Flavor.ALT_TEXT,
             Severity.ERROR, 'This img tag has alt text that ends with ' + alt_text[-3:] + ' which \
